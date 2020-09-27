@@ -1,0 +1,37 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "11654037",
+      "name": "账号-01",
+      "font_class": "zhanghao-",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "15972278",
+      "name": "call - 通话",
+      "font_class": "call-tonghua",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "17359574",
+      "name": "外拨页面",
+      "font_class": "waiboyemian",
+      "unicode": "e64a",
+      "unicode_decimal": 58954
+    },
+    {
+      "icon_id": "17441839",
+      "name": "密码",
+      "font_class": "tubiaozhizuomoban1-01",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    }
+  ]
+}

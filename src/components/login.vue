@@ -41,52 +41,52 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       login_form: {
-        username: "admin",
-        password: "123456"
+        username: 'admin',
+        password: '123456'
       },
       // 表单的验证规则
       ruleForm: {
         username: [
-          { required: true, message: "请输入姓名", trigger: "blur" },
-          { min: 3, max: 5, message: "长度在 3 到 5 个字符", trigger: "blur" }
+          { required: true, message: '请输入姓名', trigger: 'blur' },
+          { min: 2, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ],
         password: [
-          { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 5, max: 10, message: "长度在 5 到 10 个字符", trigger: "blur" }
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
         ]
       }
-    };
+    }
   },
   methods: {
     // 重置表单
-    resetLoginForm() {
-      this.$refs.ruleForm11.resetFields();
+    resetLoginForm () {
+      this.$refs.ruleForm11.resetFields()
     },
-    loginForm() {
+    loginForm () {
       this.$refs.ruleForm11.validate(async value => {
-        if (!value) return;
+        if (!value) return
         // 发送登陆请求
-        const { data: res } = await this.$http.post("/login", this.login_form);
+        const { data: res } = await this.$http.post('/login', this.login_form)
 
         if (res.meta.status !== 200) {
-          this.$message("登陆失败");
+          this.$message('登陆失败')
         } else {
           this.$message({
-            message: "登陆成功",
-            type: "success"
-          });
+            message: '登陆成功',
+            type: 'success'
+          })
           // 保存token
-          window.sessionStorage.setItem("token", res.data.token);
-          console.log(this);
-          this.$router.push("/home");
+          window.sessionStorage.setItem('token', res.data.token)
+          console.log(this)
+          this.$router.push('/home')
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="less" scoped>

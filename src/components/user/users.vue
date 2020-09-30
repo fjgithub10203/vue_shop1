@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 标题 -->
+    <!-- 面包穴导航 -->
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
@@ -72,7 +72,7 @@
                 type="primary"
                 icon="el-icon-setting"
                 size="mini"
-                @click="roleUsers(usersList.id)"
+                @click="showUserRole(slotProps.row)"
               >
               </el-button>
             </el-tooltip>
@@ -95,6 +95,37 @@
       </div>
     </el-card>
     <!-- 添加用户弹框组件 -->
+
+    <!-- 角色弹窗 -->
+
+    <el-dialog
+      title="分配角色"
+      :visible.sync="dialogUserRole"
+      width="30%"
+      :before-close="handleClose"
+    >
+      <div>
+        <p>当前用户名:{{ userInfo.username }}</p>
+        <p>当前用户的角色:{{ userInfo.role_name }}</p>
+        <p>
+          分配新的角色:
+          <el-select v-model="selectRoleId" placeholder="请选择">
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="resetUserRoleClose">取 消</el-button>
+        <el-button type="primary" @click="saveUserRole">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 冯生弹铗 -->
     <el-dialog
       title="添加用户信息"
       :visible.sync="adddialogVisible"
@@ -186,6 +217,12 @@ export default {
       cb(new Error("请输入合法的手机号"));
     };
     return {
+      // 角色开关
+      dialogUserRole: false,
+      userInfo: {},
+      roleList: [],
+      selectRoleId: "",
+
       usersList: [],
       queryUser: {
         query: "",
@@ -250,6 +287,40 @@ export default {
   },
 
   methods: {
+    // 关闭角色弹窗按钮
+    resetUserRoleClose() {
+      this.userInfo = {};
+      this.selectRoleId = "";
+      this.dialogUserRole = false;
+    },
+    // 保存用户分配的角色
+    async saveUserRole() {
+      if (!this.selectRoleId)
+        return this.$message.error("请选择用户的分配角色");
+      const { data: res } = await this.$http.put(
+        `users/${this.userInfo.id}/role`,
+        {
+          rid: this.selectRoleId
+        }
+      );
+      
+      if (res.meta.status !== 200)
+        return this.$message.error("更新用户角色失败");
+      this.getUsersList();
+      this.dialogUserRole = false;
+    },
+    // 展示用户分配角色按钮
+    async showUserRole(users) {
+      this.userInfo = users;
+      // 获取当前用户的所有角色并去渲染
+      const { data: res } = await this.$http.get("roles");
+      if (res.meta.status !== 200)
+        return this.$message.error("获取当前用户的角色失败");
+      this.roleList = res.data;
+      console.log(res);
+      this.dialogUserRole = true;
+    },
+
     // 修改用户
     async showEditDialog(id) {
       // 根据用户id获取数据渲染列表
